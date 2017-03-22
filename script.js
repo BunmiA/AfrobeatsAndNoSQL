@@ -6,7 +6,7 @@ function createData(){
   		url: 'https://dirichi206.cloudant.com/armhs_db',
   		type: "POST",
       contentType: "application/json",
-      data: JSON.stringify({name: "cholo"}),
+      data: JSON.stringify({name: "choloro"}),
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
       },
@@ -30,7 +30,6 @@ function readAllData(){
   			console.log(resp);
   		},
   		success: function (resp) {
-        document.getElementById('container').innerHTML = resp;
         console.log(resp);
       }
     })
@@ -47,7 +46,6 @@ function readData(){
   			console.log(resp);
   		},
   		success: function (resp) {
-        document.getElementById('container').innerHTML = resp;
         console.log(resp);
       }
     })
@@ -66,7 +64,6 @@ function updateData(){
   			console.log(resp);
   		},
   		success: function (resp) {
-        document.getElementById('container').innerHTML = resp;
         console.log(resp);
       }
     })
@@ -84,8 +81,22 @@ function deleteData(){
   			console.log(resp);
   		},
   		success: function (resp) {
-        document.getElementById('container').innerHTML = resp;
         console.log(resp);
       }
     })
 }
+
+$(document).ready(function(){
+  $('#create').click(function(){
+    createData();
+  })
+  $('#read').click(function(){
+    readData();
+  })
+  $('#update').click(function(){
+    updateData();
+  })
+  $('#delete').click(function(){
+    deleteData();
+  })
+})
