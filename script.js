@@ -1,20 +1,30 @@
-username = 'theranedculdnewespontsee'
-password = '66b5a759d0e32870a80f6194a6888b80d4059bdc'
+// var db = 'https://dirichi206.cloudant.com/armhs_db';
+// var username = 'theranedculdnewespontsee'
+// var password = '66b5a759d0e32870a80f6194a6888b80d4059bdc'
+
+var db = 'http://localhost:5984/test';
+var username = 'test';
+var password ='test';
+
 
 var songList ;
+ var newDataObj;
 
 function loadTable(){
-  $('#songListtable').bootstrapTable({
+  $('#songListTable').bootstrapTable({
       data: songList
   });
 }
 
 function createData(){
+  console.log("creating data");
+
   $.ajax({
-  		url: 'https://dirichi206.cloudant.com/armhs_db',
+  		url: db+'/',
   		type: "POST",
       contentType: "application/json",
-      data: JSON.stringify({name: "choloro"}),
+      data: JSON.stringify(newDataObj),
+      dataType: "json",
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
       },
@@ -29,7 +39,7 @@ function createData(){
 
 function readAllData(){
   $.ajax({
-  		url: 'https://dirichi206.cloudant.com/armhs_db/_all_docs?include_docs=true&conflicts=true',
+  		url: db+'/_all_docs?include_docs=true',
   		type: "GET",
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
@@ -48,7 +58,7 @@ function readAllData(){
 
 function readData(){
   $.ajax({
-  		url: 'https://dirichi206.cloudant.com/armhs_db/3a7c2c35d105702736713a35930f19f7',
+  		url: db+'/3a7c2c35d105702736713a35930f19f7',
   		type: "GET",
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
@@ -81,8 +91,13 @@ function updateData(){
 }
 
 function deleteData(){
+var item = getSelectedItem()[0];
+var id = item.id;
+var rev = item.rev; 
+
+console.log("item id id ", item);
   $.ajax({
-  		url: 'https://dirichi206.cloudant.com/armhs_db/d3b6f7ee745b81bddaed1146ef21175c?rev=1-6ce27b080f1f53f85d7a53f81120231b',
+      url: db+'/'+ id+'?rev='+rev,
   		type: "DELETE",
       contentType: "application/json",
       headers: {
@@ -97,9 +112,61 @@ function deleteData(){
     })
 }
 
+function createNewDataObj(){
+  var name = $('#name').val();
+  var songTitle = $('#songTitle').val();
+  var ArtistName = $('#ArtistName').val();
+
+  newDataObj =
+   {
+    "name" : name, 
+     "songTitle" :songTitle,
+     "ArtistName" : ArtistName
+  };
+  console.log("your input data is", newDataObj);
+
+}
+
+function actionFormatter(value, row, index) {
+    return [
+        '<a class="edit " href="javascript:void(0)" title="Edit">',
+        '<i class="fa fa-pencil fa-fw" aria-hidden="true"></i>',
+        '</a>',
+        '<a class="remove"  href="javascript:void(0)" title="Remove">',
+        '<i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>',
+        '</a>'
+    ].join('');
+}
+
+window.actionEvents = {
+    'click .edit': function (e, value, row, index) {
+        alert('You click edit icon, row: ' + JSON.stringify(row));
+        console.log(value, row, index);
+    },
+    'click .remove': function (e, value, row, index) {
+        alert('You click remove icon, row: ' + JSON.stringify(row));
+        console.log(value, row, index);
+    }
+};
+
+
+
+
+  function getSelectedItem() {
+        return $.map($('#songListTable').bootstrapTable('getSelections'), function (row) {
+          console.log(row);
+          return {
+        "id": row.id,
+        "rev": row.value.rev
+    }; 
+    })
+  }
+
 $(document).ready(function(){
   $('#create').click(function(){
+    createNewDataObj();
     createData();
+    readAllData();
   })
   $('#read').click(function(){
     readData();
@@ -112,5 +179,6 @@ $(document).ready(function(){
   })
   $('#delete').click(function(){
     deleteData();
+    readAllData();
   })
 })
