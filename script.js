@@ -1,6 +1,14 @@
 username = 'theranedculdnewespontsee'
 password = '66b5a759d0e32870a80f6194a6888b80d4059bdc'
 
+var songList ;
+
+function loadTable(){
+  $('#songListtable').bootstrapTable({
+      data: songList
+  });
+}
+
 function createData(){
   $.ajax({
   		url: 'https://dirichi206.cloudant.com/armhs_db',
@@ -21,7 +29,7 @@ function createData(){
 
 function readAllData(){
   $.ajax({
-  		url: 'https://dirichi206.cloudant.com/armhs_db/_all_docs',
+  		url: 'https://dirichi206.cloudant.com/armhs_db/_all_docs?include_docs=true&conflicts=true',
   		type: "GET",
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
@@ -31,6 +39,9 @@ function readAllData(){
   		},
   		success: function (resp) {
         console.log(resp);
+        songList = resp.rows;
+        console.log("the data returned", songList);
+        loadTable();
       }
     })
 }
@@ -92,6 +103,9 @@ $(document).ready(function(){
   })
   $('#read').click(function(){
     readData();
+  })
+  $('#readAll').click(function(){
+    readAllData();
   })
   $('#update').click(function(){
     updateData();
