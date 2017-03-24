@@ -1,10 +1,10 @@
-// var db = 'https://dirichi206.cloudant.com/armhs_db';
-// var username = 'theranedculdnewespontsee'
-// var password = '66b5a759d0e32870a80f6194a6888b80d4059bdc'
-
 var db = 'http://localhost:5984/test';
 var username = 'test';
 var password ='test';
+var trackUrls =[];
+
+var lastfmUrlPartOne = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='
+var lastfmUrlPartTwo ='&limit=10' + '&api_key=' + api_key + '&format=json'
 
 
 var songList ;
@@ -15,6 +15,27 @@ function loadTable(){
     data: songList
   });
     $('#songListTable').bootstrapTable('load',songList);
+}
+
+function getSong(songTitle, artistName){
+  $.ajax({
+    url: lastfmUrlPartOne + songTitle + '&artist='+ artistName +lastfmUrlPartTwo,
+    type: "GET",
+    error: function (resp) {
+     console.log(resp);
+   },
+   success: function (resp) {
+    var tracks = resp.results.trackmatches.track;
+    console.log(tracks);
+    trackUrls=[];
+    for (var i = 0; i < tracks.length; i++) {
+      trackUrls.push(tracks[i].url);
+    }
+    console.log(trackUrls);
+    alert('You can play this song using this links ' + trackUrls.toString());
+
+  }
+})
 }
 
 function createData(){
@@ -153,7 +174,7 @@ window.actionEvents = {
     console.log(value, row, index);
   },
   'click .play': function (e, value, row, index) {
-    alert('You clicked the play icon, row: ' + JSON.stringify(row));
+    getSong(row.doc.songTitle, row.doc.artistName);
     console.log(value, row, index);
   }
 };
