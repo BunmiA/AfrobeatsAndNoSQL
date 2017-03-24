@@ -14,6 +14,7 @@ function loadTable(){
   $('#songListTable').bootstrapTable({
     data: songList
   });
+    $('#songListTable').bootstrapTable('load',songList);
 }
 
 function createData(){
@@ -177,18 +178,15 @@ function getSelectedItem() {
 $(document).ready(function(){
   $('#create').click(function(){
     createNewDataObj();
-    createData();
-    readAllData();
+    createData();   
   })
   $('#read').click(function(){
     updateData();
-    // readData();
   })
   $('#readAll').click(function(){
     readAllData();
   })
   $('#update').click(function(){
-
    var test = getSelectedItem()[0];
    var id = test.id;
    var rev = test.rev;
@@ -211,7 +209,6 @@ $(document).ready(function(){
     var newName = $('#nameModal').val()
     var newSongTitle =  $('#songTitleModal').val()
     var newArtistName = $('#artistNameModal').val()
-
    var data = { "_id":id,
       "_rev": rev,
       "name": newName,
