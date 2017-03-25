@@ -1,4 +1,4 @@
-var api_key ='test';
+var api_key = 'test'
 
 var db = 'http://localhost:5984/test';
 var username = 'test';
@@ -81,9 +81,9 @@ function readAllData(){
 })
 }
 
-function readData(){
+function readData(id){
   $.ajax({
-    url: db+'/3a7c2c35d105702736713a35930f19f7',
+    url: db + '/' + id,
     type: "GET",
     headers: {
       "Authorization": "Basic " + btoa(username + ":" + password)
