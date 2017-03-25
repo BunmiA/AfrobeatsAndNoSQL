@@ -1,3 +1,5 @@
+var api_key ='test';
+
 var db = 'http://localhost:5984/test';
 var username = 'test';
 var password ='test';
@@ -5,6 +7,7 @@ var trackUrls =[];
 
 var lastfmUrlPartOne = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='
 var lastfmUrlPartTwo ='&limit=10' + '&api_key=' + api_key + '&format=json'
+
 
 
 var songList ;
