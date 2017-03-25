@@ -41,6 +41,9 @@ function getSong(songTitle, artistName){
 })
 }
 
+
+// functions interacting with db
+
 function createData(){
   console.log("creating data");
 
@@ -99,11 +102,10 @@ function readData(id){
 
 function updateData(id,data){
   $.ajax({
-    url: db+'/'+ id,
-    type: "PUT",
+    url: db+'/'+ ' a)what goes here',
+    type: " b) what type should be here ?",
     contentType: "application/json",
     data: JSON.stringify(data),
-    // data: JSON.stringify({"_id": "3a7c2c35d105702736713a35930f19f7", "_rev": "2-4b6555240489636159e4d68ca0c3a255","number": "abobo", "type": "user", "body": "my friend"}),
     headers: {
       "Authorization": "Basic " + btoa(username + ":" + password)
     },
@@ -123,8 +125,8 @@ function deleteData(){
 
   console.log("item id id ", item);
   $.ajax({
-    url: db+'/'+ id+'?rev='+rev,
-    type: "DELETE",
+    url: db+'/'+ 'c) what goes here ',
+    type: "d) what type should this be",
     contentType: "application/json",
     headers: {
       "Authorization": "Basic " + btoa(username + ":" + password)
